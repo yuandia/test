@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.StatisticssMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.entity.Statisticss">
+        <result column="name" jdbcType="VARCHAR" property="bookName"/>
+        <result column="count1" jdbcType="INTEGER" property="count"/>
+    </resultMap>
+
+    <select id="getMaxBook" resultMap="BaseResultMap">
+SELECT
+  name,
+  count1
+FROM book a
+  JOIN (SELECT
+          book_id,
+          count(*) AS count1
+        FROM user_book
+        GROUP BY book_id
+        ORDER BY count1 DESC
+        LIMIT #{mingci2}) b ON a.id = b.book_id
+    </select>
+
+</mapper>

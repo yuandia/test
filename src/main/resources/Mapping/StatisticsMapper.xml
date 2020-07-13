@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.StatisticsMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.entity.Statistics">
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="count1" jdbcType="INTEGER" property="count"/>
+    </resultMap>
+
+    <select id="getList" resultMap="BaseResultMap">
+        select user_name,COUNT(*) AS count2 FROM user GROUP BY user_name ORDER BY count2 DESC
+    </select>
+
+    <select id="getMaxUser" resultMap="BaseResultMap">
+SELECT
+  user_name,
+  count1
+FROM user a
+  JOIN
+  (SELECT
+     user_id,
+     count(*) AS count1
+   FROM user_book
+   GROUP BY user_id
+   ORDER BY count1 DESC LIMIT #{mingci}) b ON a.id = b.user_id
+    </select>
+
+</mapper>
